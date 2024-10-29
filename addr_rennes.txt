@@ -1,0 +1,43 @@
+Routage SIEGE - RENNES
+
+!!! Routage SIEGE/RENNES
+!! HSRP1 ~ RENNES
+enable
+configure terminal
+ip route 10.1.0.0 255.255.254.0 10.0.4.10
+ip route 10.1.2.0 255.255.254.0 10.0.4.10
+
+exit
+
+!! HSRP2 ~ RENNES
+enable
+configure terminal
+ip route 10.1.0.0 255.255.254.0 10.0.4.26
+ip route 10.1.2.0 255.255.254.0 10.0.4.26
+
+exit
+
+!!! RENNES ~ HSRP_1_2
+enable
+configure terminal
+
+!! Route principale via HSRP1
+ip route 10.0.0.0 255.255.252.0 10.0.4.9 1
+ip route 10.0.0.0 255.255.252.0 10.0.4.9 1
+
+!! Route de secours via HSRP2
+ip route 10.0.0.0 255.255.252.0 10.0.4.25 2
+ip route 10.0.0.0 255.255.252.0 10.0.4.25 2
+
+
+Router(config-if)#ip dhcp pool LAN_RENNES_1
+Router(dhcp-config)#network 10.1.0.0 255.255.254.0
+Router(dhcp-config)#default-router 10.1.1.254
+Router(dhcp-config)#ip dhcp excluded-address 10.1.1.254
+
+Router(config)#ip dhcp pool LAN_RENNES_2
+Router(dhcp-config)#network 10.1.2.0 255.255.254.0
+Router(dhcp-config)#ip dhcp excluded-address 10.1.3.254
+Router(dhcp-config)#default-router 10.1.3.254
+
+exit

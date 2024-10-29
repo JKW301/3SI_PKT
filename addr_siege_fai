@@ -1,0 +1,60 @@
+!!! Configuration HSRP + GW Virtuelle
+!! HSRP1
+interface GigabitEthernet0/0
+standby 1 ip 10.0.3.250
+standby 1 priority 110
+standby 1 preempt
+no shutdown
+exit
+
+!! HSRP2
+interface GigabitEthernet0/0
+standby 1 ip 10.0.3.250
+standby 1 priority 100
+standby 1 preempt
+no shutdown
+exit
+
+!!! Routage SIEGE/FAI
+!! HSRP1 ~ FAI
+enable
+configure terminal
+ip route 192.168.0.0 255.255.255.0 203.0.13.1
+exit
+
+!! HSRP2 ~ FAI
+enable
+configure terminal
+ip route 192.168.0.0 255.255.255.0 203.0.13.5
+exit
+
+!!! FAI ~ HSRP_1_2
+enable
+configure terminal
+
+!! Route principale via HSRP1
+ip route 10.0.0.0 255.255.252.0 203.0.13.2 1
+
+!! Route de secours via HSRP2
+ip route 10.0.0.0 255.255.252.0 203.0.13.6 2
+exit
+
+!!! Configuration DHCP - SIEGE
+
+!! HSRP1
+HSRP1>
+HSRP1>en
+HSRP1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+HSRP1(config)#ip dhcp pool LAN_SIEGE
+HSRP1(dhcp-config)#network 10.0.0.0 255.255.255.0
+HSRP1(dhcp-config)#ip dhcp excluded-address 10.0.3.253 10.0.3.254
+
+!! HSRP2
+HSRP2>en
+HSRP2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+HSRP2(config)#ip dhcp pool LAN_SIEGE
+HSRP2(dhcp-config)#network 10.0.0.0 255.255.252.0
+HSRP2(dhcp-config)#default-router 10.0.3.250
+ip dhcp excluded-address 10.0.3.253 10.0.3.254
