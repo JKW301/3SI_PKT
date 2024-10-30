@@ -1,0 +1,40 @@
+Configuration DHCP sur HSRP1 et HSRP2
+Sur HSRP1 :
+
+enable
+configure terminal
+ip dhcp pool LAN_SIEGE
+network 10.0.0.0 255.255.255.0
+default-router 10.0.3.250       // Passerelle virtuelle via HSRP
+ip dhcp excluded-address 10.0.3.253 10.0.3.254
+end
+write memory
+-------------------------------
+Sur HSRP2 :
+
+enable
+configure terminal
+ip dhcp pool LAN_SIEGE
+network 10.0.0.0 255.255.255.0
+default-router 10.0.3.250       // Passerelle virtuelle via HSRP
+ip dhcp excluded-address 10.0.3.253 10.0.3.254
+end
+write memory
+
+
+----------------------------------
+
+Afficher la configuration DHCP : Sur les deux routeurs :
+
+show running-config | section dhcp
+
+-----------------------------------
+
+Commandes de Test sur le Client PC (Rennes) : 
+ipconfig /all
+ipconfig /release
+ipconfig /renew
+------------------------
+
+
+
