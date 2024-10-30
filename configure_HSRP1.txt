@@ -1,0 +1,57 @@
+
+HSRP1 : 
+
+enable
+configure terminal
+interface GigabitEthernet0/0
+standby 1 ip 10.0.3.250       
+standby 1 priority 110         
+standby 1 preempt              
+no shutdown
+exit
+end
+write memory
+
+
+HSRP2 : 
+enable
+configure terminal
+interface GigabitEthernet0/0
+standby 1 ip 10.0.3.250      
+standby 1 priority 90          
+standby 1 preempt            
+no shutdown
+exit
+end
+write memory
+
+Vérification de l'État de HSRP
+
+show standby brief
+
+
+
+Test de Basculement HSRP
+
+Simuler une Panne de HSRP1
+
+Sur HSRP1, désactivez l'interface pour simuler une panne :
+enable
+configure terminal
+interface GigabitEthernet0/0
+shutdown
+exit
+
+Sur HSRP2, vérifiez que HSRP2 est passé en Active :
+show standby brief
+
+
+Réactiver HSRP1
+
+Sur HSRP1, réactivez l'interface pour qu'il reprenne son rôle :
+
+enable
+configure terminal
+interface GigabitEthernet0/0
+no shutdown
+exit
