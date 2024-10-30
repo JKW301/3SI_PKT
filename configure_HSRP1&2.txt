@@ -1,36 +1,45 @@
-
+----------------------------------------------
 HSRP1 : 
 
-enable
-configure terminal
-interface GigabitEthernet0/0
-standby 1 ip 10.0.3.250       
-standby 1 priority 110         
-standby 1 preempt              
-no shutdown
-exit
-end
-write memory
+HSRP1# enable
+HSRP1# configure terminal
+HSRP1(config)# interface GigabitEthernet0/0
+HSRP1(config-if)# ip address 10.0.3.254 255.255.255.0
+HSRP1(config-if)# standby 1 ip 10.0.3.250          
+HSRP1(config-if)# standby 1 priority 100            
+HSRP1(config-if)# standby 1 preempt                 
+HSRP1(config-if)# no shutdown
+HSRP1(config-if)# exit
+HSRP1(config)# end
+HSRP1# write memory
 
 
+------------------------------------------------
 HSRP2 : 
-enable
-configure terminal
-interface GigabitEthernet0/0
-standby 1 ip 10.0.3.250      
-standby 1 priority 90          
-standby 1 preempt            
-no shutdown
-exit
-end
-write memory
+HSRP2# enable
+HSRP2# configure terminal
+HSRP2(config)# interface GigabitEthernet0/0
+HSRP2(config-if)# ip address 10.0.3.253 255.255.255.0
+HSRP2(config-if)# standby 1 ip 10.0.3.250           
+HSRP2(config-if)# standby 1 priority 80             
+HSRP2(config-if)# standby 1 preempt        
+HSRP2(config-if)# no shutdown
+HSRP2(config-if)# exit
+HSRP2(config)# end
+HSRP2# write memory
+--------------------------------------------
+petite Explication : 
 
+- Adresse IP Virtuelle : 10.0.3.250 est utilisée comme passerelle pour les hôtes du réseau du siège.
+- Priorités : HSRP1 a une priorité de 100 pour être le routeur principal, alors que HSRP2 a une priorité de 80 pour rester en veille.
+- Préemption : Permet à HSRP1 de reprendre le rôle Active automatiquement une fois qu'il est de nouveau Actif après une panne.
+----------------------------------------------------------
 Vérification de l'État de HSRP
-
+--
 show standby brief
 
 
-
+--------------------------------------------------------
 Test de Basculement HSRP
 
 Simuler une Panne de HSRP1
