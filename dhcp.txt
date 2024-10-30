@@ -1,6 +1,29 @@
 Configuration DHCP sur HSRP1 et HSRP2
 Sur HSRP1 :
 
+HSRP1# enable
+HSRP1# configure terminal
+HSRP1(config)# ip dhcp pool LAN_SIEGE
+HSRP1(dhcp-config)# network 10.0.3.0 255.255.255.0
+HSRP1(dhcp-config)# default-router 10.0.3.250               // IP virtuelle HSRP comme passerelle par défaut
+HSRP1(dhcp-config)# dns-server 8.8.8.8                      // Serveur DNS (par exemple Google DNS)
+HSRP1(dhcp-config)# ip dhcp excluded-address 10.0.3.253 10.0.3.254   // Exclusion des IP de HSRP1 et HSRP2
+HSRP1(dhcp-config)# exit
+HSRP1(config)# end
+HSRP1# write memory
+
+HSRP2# enable
+HSRP2# configure terminal
+HSRP2(config)# ip dhcp pool LAN_SIEGE
+HSRP2(dhcp-config)# network 10.0.3.0 255.255.255.0
+HSRP2(dhcp-config)# default-router 10.0.3.250               // IP virtuelle HSRP comme passerelle par défaut
+HSRP2(dhcp-config)# dns-server 8.8.8.8                      // Serveur DNS (même DNS pour uniformité)
+HSRP2(dhcp-config)# ip dhcp excluded-address 10.0.3.253 10.0.3.254   // Exclusion des IP de HSRP1 et HSRP2
+HSRP2(dhcp-config)# exit
+HSRP2(config)# end
+HSRP2# write memory
+------------------------------------
+
 enable
 configure terminal
 ip dhcp pool LAN_SIEGE
