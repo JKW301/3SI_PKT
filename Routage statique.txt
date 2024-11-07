@@ -1,0 +1,22 @@
+!! route de HSRP1 vers Rennes
+ip route 10.1.2.0 255.255.254.0 10.0.4.10
+ip route 10.1.0.0 255.255.254.0 10.0.4.10
+!! route vers Stras
+ip route 172.16.0.0 255.255.255.128 10.0.4.14
+ip route 172.16.0.0 255.255.255.0 10.0.4.14
+!! route vers Grenoble
+ip route 192.168.0.0 255.255.255.128 10.0.4.18
+ip route 192.168.0.128 255.255.255.128 10.0.4.18
+!! route vers Bordeaux
+ip route 192.168.1.0 255.255.255.192 10.0.4.22
+ip route 192.168.1.64 255.255.255.224 10.0.4.22
+
+!!routage de n'importe quelle routeur de site vers internet en passant par HSRP1
+!! de Rennes à HSRP1
+ip route 0.0.0.0 0.0.0.0 10.0.4.9
+!! de Stras à HSRP1
+ip route 0.0.0.0 0.0.0.0 10.0.4.13
+!! de Grenole à HSRP1
+ip route 0.0.0.0 0.0.0.0 10.0.4.17
+!! de Bordeaux à HSRP1
+ip route 0.0.0.0 0.0.0.0 10.0.4.21
