@@ -1,0 +1,39 @@
+HSRP2#show ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+1.1.1.1           1   FULL/DR         00:00:34    10.0.3.254      GigabitEthernet0/0
+3.3.3.3           0   FULL/  -        00:00:33    10.0.4.26       Serial0/0/1
+4.4.4.4           0   FULL/  -        00:00:31    10.0.4.30       Serial0/1/0
+5.5.5.5           0   FULL/  -        00:00:36    10.0.4.34       Serial0/1/1
+6.6.6.6           0   FULL/  -        00:00:35    10.0.4.38       Serial0/2/0
+HSRP2#
+HSRP2#router ospf1
+             ^
+% Invalid input detected at '^' marker.
+
+HSRP2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+HSRP2(config)#router ospf 1
+HSRP2(config-router)#network 203.0.13.4 0.0.0.3 area 0
+HSRP2(config-router)#do wr
+Building configuration...
+[OK]
+HSRP2(config-router)#ex
+HSRP2(config)#
+03:28:42: %OSPF-5-ADJCHG: Process 1, Nbr 7.7.7.7 on Serial0/0/0 from LOADING to FULL, Loading Done
+
+HSRP2(config)#ex
+HSRP2#
+%SYS-5-CONFIG_I: Configured from console by console
+
+HSRP2#show ip ospf neighbor
+
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+1.1.1.1           1   FULL/DR         00:00:35    10.0.3.254      GigabitEthernet0/0
+7.7.7.7           0   FULL/  -        00:00:39    203.0.13.5      Serial0/0/0
+3.3.3.3           0   FULL/  -        00:00:34    10.0.4.26       Serial0/0/1
+4.4.4.4           0   FULL/  -        00:00:32    10.0.4.30       Serial0/1/0
+5.5.5.5           0   FULL/  -        00:00:37    10.0.4.34       Serial0/1/1
+6.6.6.6           0   FULL/  -        00:00:35
