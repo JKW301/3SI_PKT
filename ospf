@@ -1,0 +1,93 @@
+!!hsrp1
+router ospf 1
+router-id 1.1.1.1
+network 10.0.4.8 0.0.0.3 area 0
+network 10.0.4.12 0.0.0.3 area 0
+network 10.0.4.16 0.0.0.3 area 0
+network 10.0.4.20 0.0.0.3 area 0
+network 10.0.0.0 0.0.3.255 area 0
+exit
+
+ip route 0.0.0.0 0.0.0.0 203.0.13.1
+router ospf 1
+default-information originate
+exit
+
+!!hsrp2
+router ospf 1
+router-id 2.2.2.2
+network 10.0.4.24 0.0.0.3 area 0
+network 10.0.4.28 0.0.0.3 area 0
+network 10.0.4.32 0.0.0.3 area 0
+network 10.0.4.36 0.0.0.3 area 0
+network 10.0.0.0 0.0.3.255 area 0
+exit
+
+ip route 0.0.0.0 0.0.0.0 203.0.13.5
+router ospf 1
+default-information originate
+exit
+end
+write memory
+
+
+!! rennes
+router ospf 1
+router-id 3.3.3.3
+network 10.0.4.8 0.0.0.3 area 0
+network 10.0.4.24 0.0.0.3 area 0
+network 10.1.0.0 0.0.1.255 area 0
+network 10.1.2.0 0.0.1.255 area 0
+exit
+
+
+!! stras
+router ospf 1
+router-id 4.4.4.4
+network 10.0.4.12 0.0.0.3 area 0
+network 10.0.4.28 0.0.0.3 area 0
+network 172.16.0.0 0.0.0.127 area 0
+network 172.16.1.0 0.0.0.255 area 0
+exit
+
+!! grenoble
+router ospf 1
+router-id 5.5.5.5
+network 10.0.4.16 0.0.0.3 area 0
+network 10.0.4.32 0.0.0.3 area 0
+network 192.168.0.0 0.0.0.127 area 0
+network 192.168.0.128 0.0.0.127 area 0
+exit
+
+!! bordeaux
+router ospf 1
+router-id 6.6.6.6
+network 10.0.4.20 0.0.0.3 area 0
+network 10.0.4.36 0.0.0.3 area 0
+network 192.168.1.0 0.0.0.63 area 0
+network 192.168.1.64 0.0.0.31 area 0
+exit
+
+!! FAI
+router ospf 1
+router-id 7.7.7.7
+network 203.0.13.0 0.0.0.3 area 0
+network 203.0.13.4 0.0.0.3 area 0
+exit
+ip route 0.0.0.0 0.0.0.0 203.0.13.1
+end
+write memory
+
+router ospf 1
+network 192.168.0.0 0.0.0.255 area 0
+exit
+end
+write memory
+
+
+
+
+
+
+
+
