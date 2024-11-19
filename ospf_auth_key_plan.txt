@@ -1,105 +1,62 @@
 -------------------------------
 Pour chaque routeur du site :
 -------------------------------
+configure terminal
 key chain OSPF-AUTH
  key 1
   key-string PDTHmFEkzm8i3ck
-  cryptographic-algorithm hmac-sha-256
-exit
+ exit
 
-# du routeur vers HSRP1
-interface Se0/0/0
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
-
-# du routeur vers HSRP2
-interface Se0/0/1
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
-
-router ospf 1
- area 0 authentication message-digest
-
--------------------------------
-HSRP1
--------------------------------
-key chain OSPF-AUTH
- key 1
-  key-string PDTHmFEkzm8i3ck
-  cryptographic-algorithm hmac-sha-256
-exit
-
-#Vers les interface physiques
+! Configuration des interfaces vers HSRP1 et HSRP2
 interface Serial0/0/0
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
 interface Serial0/0/1
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
-interface Serial0/1/0
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+! Sauvegarder la configuration
+copy running-config startup-config
 
-interface Serial0/1/1
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
-
-#Vers les interface VLAN
-interface GigabitEthernet1/1.1
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
-
-interface GigabitEthernet1/1.2
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
-
-interface GigabitEthernet1/1.3
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
-
-router ospf 1
- area 0 authentication message-digest
 
 -------------------------------
-HSRP2
+HSRP1 et HSRP2
 -------------------------------
-
+configure terminal
 key chain OSPF-AUTH
- key 1
-  key-string PDTHmFEkzm8i3ck
-  cryptographic-algorithm hmac-sha-256
+key 1
+key-string PDTHmFEkzm8i3ck
 exit
 
-#Vers les interface physiques
 interface Serial0/0/0
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
 interface Serial0/0/1
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
 interface Serial0/1/0
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
-interface Serial0/1/1
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+ interface Serial0/1/1
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
-# Vers les interfaces VLAN
-interface GigabitEthernet1/1.1
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+interface Serial0/2/0
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
-interface GigabitEthernet1/1.2
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
+interface GigabitEthernet0/1.1
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
+interface GigabitEthernet0/1.2
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
+interface GigabitEthernet0/1.3
+ ip ospf authentication message-digest
+ ip ospf message-digest-key 1 md5 PDTHmFEkzm8i3ck
 
-interface GigabitEthernet1/1.3
- ip ospf authentication key-chain OSPF-AUTH
- ip ospf authentication
-router ospf 1
- area 0 authentication message-digest
+copy running-config startup-config
