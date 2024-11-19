@@ -7,7 +7,13 @@ key chain OSPF-AUTH
   cryptographic-algorithm hmac-sha-256
 exit
 
+# du routeur vers HSRP1
 interface Se0/0/0
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+# du routeur vers HSRP2
+interface Se0/0/1
  ip ospf authentication key-chain OSPF-AUTH
  ip ospf authentication
 
@@ -23,6 +29,7 @@ key chain OSPF-AUTH
   cryptographic-algorithm hmac-sha-256
 exit
 
+#Vers les interface physiques
 interface Serial0/0/0
  ip ospf authentication key-chain OSPF-AUTH
  ip ospf authentication
@@ -39,6 +46,7 @@ interface Serial0/1/1
  ip ospf authentication key-chain OSPF-AUTH
  ip ospf authentication
 
+#Vers les interface VLAN
 interface GigabitEthernet1/1.1
  ip ospf authentication key-chain OSPF-AUTH
  ip ospf authentication
@@ -64,6 +72,7 @@ key chain OSPF-AUTH
   cryptographic-algorithm hmac-sha-256
 exit
 
+#Vers les interface physiques
 interface Serial0/0/0
  ip ospf authentication key-chain OSPF-AUTH
  ip ospf authentication
@@ -80,6 +89,7 @@ interface Serial0/1/1
  ip ospf authentication key-chain OSPF-AUTH
  ip ospf authentication
 
+# Vers les interfaces VLAN
 interface GigabitEthernet1/1.1
  ip ospf authentication key-chain OSPF-AUTH
  ip ospf authentication
