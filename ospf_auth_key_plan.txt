@@ -1,0 +1,95 @@
+-------------------------------
+Pour chaque routeur du site :
+-------------------------------
+key chain OSPF-AUTH
+ key 1
+  key-string PDTHmFEkzm8i3ck
+  cryptographic-algorithm hmac-sha-256
+exit
+
+interface Se0/0/0
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+router ospf 1
+ area 0 authentication message-digest
+
+-------------------------------
+HSRP1
+-------------------------------
+key chain OSPF-AUTH
+ key 1
+  key-string PDTHmFEkzm8i3ck
+  cryptographic-algorithm hmac-sha-256
+exit
+
+interface Serial0/0/0
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface Serial0/0/1
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface Serial0/1/0
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface Serial0/1/1
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface GigabitEthernet1/1.1
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface GigabitEthernet1/1.2
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface GigabitEthernet1/1.3
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+router ospf 1
+ area 0 authentication message-digest
+
+-------------------------------
+HSRP2
+-------------------------------
+
+key chain OSPF-AUTH
+ key 1
+  key-string PDTHmFEkzm8i3ck
+  cryptographic-algorithm hmac-sha-256
+exit
+
+interface Serial0/0/0
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface Serial0/0/1
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface Serial0/1/0
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface Serial0/1/1
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface GigabitEthernet1/1.1
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface GigabitEthernet1/1.2
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+
+interface GigabitEthernet1/1.3
+ ip ospf authentication key-chain OSPF-AUTH
+ ip ospf authentication
+router ospf 1
+ area 0 authentication message-digest
