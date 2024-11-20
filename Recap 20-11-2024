@@ -1,0 +1,24 @@
+Plan des PC qui ne ping pas :
+Chaque PC étant dans son propre LAN, il y a donc deux lan par site relié à un unique routeur du site, lequel est connecté à HSRPs pour faire transiter les paquet, le hsrp étant le centre de ce réseau en étoile.
+(0-1 rennes, 2-3 strasbourg, 5-6 grenoble, 7-8 grenoble)
+pc0-2 ok
+pc0-3 ok
+pc1-2 N
+pc1-3 N
+
+pc2-5 OK
+pc2-6 OK
+pc3-5 OK
+pc3-6 OK
+
+pc5-7 ok
+pc5-8 OK
+pc6-7 ok
+pc6-8 ok
+
+
+- Routage statiques entre HSRPs et routeurs_sites supprimés
+- PC1 ne ping aucune machine au-delà de routeur-rennes, sauf
+    - routeur_bordeaux
+    - HSRP2
+- Il faut un routage statique entre HSRPs et RFAI.
