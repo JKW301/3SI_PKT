@@ -1,0 +1,171 @@
+------------------------
+ACL pour HSRP1
+------------------------
+enable
+configure terminal
+
+! Créer l'ACL 102
+ip access-list extended 102
+! Autoriser le trafic HTTP et HTTPS
+permit tcp any any eq www
+permit tcp any any eq 443
+! Autoriser DHCP
+permit udp any eq bootps any eq bootpc
+permit udp any eq bootpc any eq bootps
+! Autoriser OSPF
+permit ospf any any
+! Bloquer les pings entrants
+deny icmp any any echo
+! Bloquer tout autre trafic
+deny ip any any
+
+end
+write memory
+
+
+interface GigabitEthernet0/0
+ip access-group 102 in
+end
+
+------------------------
+ACL pour HSRP2
+------------------------
+
+enable
+configure terminal
+
+! Créer l'ACL 103
+ip access-list extended 103
+! Autoriser le trafic HTTP et HTTPS
+permit tcp any any eq www
+permit tcp any any eq 443
+! Autoriser DHCP
+permit udp any eq bootps any eq bootpc
+permit udp any eq bootpc any eq bootps
+! Autoriser OSPF
+permit ospf any any
+! Bloquer les pings entrants
+deny icmp any any echo
+! Bloquer tout autre trafic
+deny ip any any
+
+end
+write memory
+
+------------------------
+ACL pour Rennes
+------------------------
+enable
+configure terminal
+
+! Créer l'ACL 101
+ip access-list extended 101
+! Bloquer les requêtes DNS
+deny udp 10.4.0.0 0.0.1.255 any eq domain
+! Autoriser les pings
+permit icmp 10.4.0.0 0.0.1.255 any echo
+! Autoriser le trafic HTTP et HTTPS
+permit tcp any any eq www
+permit tcp any any eq 443
+! Autoriser DHCP
+permit udp any eq bootps any eq bootpc
+permit udp any eq bootpc any eq bootps
+! Autoriser OSPF
+permit ospf any any
+! Bloquer tout autre trafic
+deny ip any any
+
+end
+write memory
+
+interface GigabitEthernet0/0
+ip access-group 101 in
+end
+
+------------------------
+ACL pour Strasbourg
+------------------------
+enable
+configure terminal
+
+! Créer l'ACL 104
+ip access-list extended 104
+! Bloquer les pings entrants
+deny icmp any any echo
+! Autoriser le trafic HTTP et HTTPS
+permit tcp any any eq www
+permit tcp any any eq 443
+! Autoriser DHCP
+permit udp any eq bootps any eq bootpc
+permit udp any eq bootpc any eq bootps
+! Autoriser OSPF
+permit ospf any any
+! Bloquer tout autre trafic
+deny ip any any
+
+end
+write memory
+
+interface GigabitEthernet0/0
+ip access-group 104 in
+end
+
+------------------------
+ACL pour Grenoble
+-----------------------
+enable
+configure terminal
+
+! Créer l'ACL 105
+ip access-list extended 105
+! Bloquer les requêtes DNS
+deny udp 192.168.0.0 0.0.0.127 any eq domain
+! Autoriser les pings
+permit icmp 192.168.0.0 0.0.0.127 any echo
+! Autoriser le trafic HTTP et HTTPS
+permit tcp any any eq www
+permit tcp any any eq 443
+! Autoriser DHCP
+permit udp any eq bootps any eq bootpc
+permit udp any eq bootpc any eq bootps
+! Autoriser OSPF
+permit ospf any any
+! Bloquer tout autre trafic
+deny ip any any
+
+end
+write memory
+
+interface GigabitEthernet0/0
+ip access-group 105 in
+end
+
+------------------------
+ACL pour Bordeaux
+------------------------
+
+enable
+configure terminal
+
+! Créer l'ACL 106
+ip access-list extended 106
+! Bloquer les pings entrants
+deny icmp any any echo
+! Autoriser le trafic HTTP et HTTPS
+permit tcp any any eq www
+permit tcp any any eq 443
+! Autoriser DHCP
+permit udp any eq bootps any eq bootpc
+permit udp any eq bootpc any eq bootps
+! Autoriser OSPF
+permit ospf any any
+! Bloquer tout autre trafic
+deny ip any any
+
+end
+write memory
+
+
+interface GigabitEthernet0/0
+ip access-group 106 in
+end
