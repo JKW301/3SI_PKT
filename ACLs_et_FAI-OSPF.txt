@@ -1,0 +1,189 @@
+! OSPF dans RFAI
+! définir un OSPF pour le sous-réseau du FAI.
+! C'est OSPF distinct de l'OSPF de l'entreprise
+router ospf 1
+ router-id 2.2.2.2
+ log-adjacency-changes
+ network 10.255.0.0 0.0.0.255 area 0
+exit
+interface GigabitEthernet0/0
+ ip address 10.255.0.1 255.255.255.0
+ ip ospf 1 area 0
+ no shutdown
+exit
+
+! Ensuite, il faut redistribuer la route statique passant par le s-r d'interconnexion 203.0.13.1~203.0.13.2
+! il faut donc redistribuer cette route vers le s-r 10.255.0.0 255.255.255.0 du FAI
+router ospf 1
+redistribute static subnets
+
+! access list
+! implémenter un ACL pour empêcher les ping entre le réseau FAI et le réseau de l'entreprise
+access-list 101 deny icmp 10.255.0.0 0.0.0.255 any
+access-list 101 permit ip any any
+exit
+interface Serial0/0/0
+ip access-group 101 out
+exit
+!!! activer l'acl sur FAI
+configure terminal
+interface Serial0/0/0
+ip access-group 101 in
+exit
+configure terminal
+interface Serial0/0/0
+ip access-group 102 out
+exit
+
+
+
+########################################################################################################
+#######################################################################################################
+########################################################################################################
+! Dans le HSRP1, il faut aussi couper les ICMP
+! soit les ICMP venant du s-r d'interconnexion 203.x.x.x et du réseau du FAI soit 10.255.0.0
+
+! Output terminal de la configuration ACL sur HSRP1 :
+HSRP1#show access-lists
+Extended IP access list 102
+    10 permit tcp any any eq www
+    20 permit tcp any any eq 443
+    30 permit udp any eq bootps any eq bootpc
+    40 permit udp any eq bootpc any eq bootps (2 match(es))
+    50 permit ospf any any
+    60 deny icmp any any echo (3 match(es))
+    70 deny ip any any (1 match(es))
+Extended IP access list 101
+    10 deny icmp 10.255.0.0 0.0.0.255 any
+    20 permit ip any any
+Extended IP access list 110
+    10 deny icmp 203.0.13.0 0.0.0.3 any
+    20 deny icmp 10.255.0.0 0.0.0.255 any
+    30 permit ip any any
+Extended IP access list 120
+    10 deny icmp any 203.0.13.0 0.0.0.3
+    20 deny icmp any 10.255.0.0 0.0.0.255 (1 match(es))
+    30 permit ip any any (331 match(es))
+
+HSRP1#show running-config | include access-group
+ ip access-group 102 in
+ ip access-group 102 in
+ ip access-group 110 out
+ ip access-group 120 in
+ ip access-group 110 out
+ ip access-group 120 in
+ ip access-group 110 out
+ ip access-group 120 in
+ ip access-group 110 out
+ ip access-group 120 in
+ ip access-group 110 out
+########################################################################################################
+#######################################################################################################
+########################################################################################################
+
+!!! Empêcher les icmp depuis le sous-réseau du FAI vers n'importe quel autre GW
+ configure terminal
+access-list 101 deny icmp 10.255.0.0 0.0.0.255 any
+access-list 101 permit ip any any
+interface Serial0/0/0
+ip access-group 101 out
+exit
+copy running-config startup-config
+
+########################################################################################################
+#######################################################################################################
+########################################################################################################
+! Enfin, interface par interface, il faut appliquer la config ACL
+! Appliquer l'ACL de HSRP1 vers tous les sites
+interface Serial0/0/0
+ip access-group 110 out
+exit
+interface Serial0/0/0
+ip access-group 120 in
+exit
+
+interface se0/0/1
+ip access-group 110 out
+exit
+interface se0/0/1
+ip access-group 120 in
+exit
+
+interface Serial0/1/0
+ip access-group 110 out
+exit
+interface Serial0/1/0
+ip access-group 120 in
+exit
+
+interface Serial0/1/1
+ip access-group 110 out
+exit
+interface Serial0/1/1
+ip access-group 120 in
+exit
+
+interface Serial0/2/0
+ip access-group 110 out
+exit
+interface Serial0/2/0
+ip access-group 120 in
+exit
+
+interface Serial0/0/0
+ip access-group 110 out
+exit
+interface Serial0/0/0
+ip access-group 120 in
+exit
+########################################################################################################
+#######################################################################################################
+########################################################################################################
+! Comment tester les ACL ?
+! Ci-après, une méthode pour bien tester si l'ACL sur paquet ICMP fonctionne
+! On désactive la règle appliquée à l'interface qu'on voudrait tester
+! bien sûr, selon le nombre de hop que l'on souhaite tester, il faudra répéter l'opération sur plusieurs routeurs
+! et veiller à bien identifier l'interface Serial ou Gig et le groupe ACL
+!
+! Par exemple, désactiver l'acl HSRP1 se0/0/1 - Rennes, pour tester
+! Désactiver ACL 102
+configure terminal
+interface Serial0/0/0
+no ip access-group 102 in
+exit
+! Désactiver ACL 110
+configure terminal
+interface Serial0/0/0
+no ip access-group 110 out
+exit
+configure terminal
+interface Serial0/0/1
+no ip access-group 110 out
+exit
+configure terminal
+interface Serial0/0/1
+no ip access-group 120 in
+exit
+___________
+
+!!! activer l'acl HSRP1 se0/0/1 - Rennes
+! activer ACL 102
+configure terminal
+interface Serial0/0/0
+ ip access-group 102 in
+exit
+! Désactiver ACL 110
+configure terminal
+interface Serial0/0/0
+ ip access-group 110 out
+exit
+configure terminal
+interface Serial0/0/1
+ ip access-group 110 out
+exit
+configure terminal
+interface Serial0/0/1
+ ip access-group 120 in
+exit
+
+__________________
