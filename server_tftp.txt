@@ -23,3 +23,29 @@ Le fichier RFAI-config doit apparaître sur le serveur TFTP dans Service > TFTP 
 
 Ping depuis le serveur TFTP vers le routeur : 
 ping 10.255.0.1
+
+
+Appliquer le groupe ACL au VLANs du Siege dans le routeur HSRP2 
+configure terminal
+ip access-list extended VLAN_SECURITY
+ permit tcp any any eq www
+ permit tcp any any eq 443
+ permit icmp any any
+ deny ip any any
+exit
+
+interface GigabitEthernet0/1.1
+ip access-group VLAN_SECURITY in
+exit
+
+interface GigabitEthernet0/1.2
+ip access-group VLAN_SECURITY in
+exit
+
+interface GigabitEthernet0/1.3
+ip access-group VLAN_SECURITY in
+exit
+
+
+
+
