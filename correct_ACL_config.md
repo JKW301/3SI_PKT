@@ -41,7 +41,6 @@ ip access-list extended OUTBOUND_TO_FAI
   permit tcp any any eq 443
   permit udp any any eq domain
   permit icmp any any unreachable
-  permit icmp any any time-exceeded
   deny icmp any 10.0.0.0 0.255.255.255
   deny icmp any 192.168.0.0 0.0.255.255
   deny icmp any 172.16.0.0 0.15.255.255
@@ -73,4 +72,17 @@ interface Serial0/0/0
 interface Serial0/0/1
  ip access-group INBOUND_FROM_INTERNAL in
  ip access-group INBOUND_FROM_INTERNAL out
+ 
+interface Serial0/1/0
+ ip access-group INBOUND_FROM_INTERNAL in
+ ip access-group INBOUND_FROM_INTERNAL out 
+
+interface Serial0/1/1
+ ip access-group INBOUND_FROM_INTERNAL in
+ ip access-group INBOUND_FROM_INTERNAL out
+ 
+interface Serial0/2/0
+ ip access-group INBOUND_FROM_INTERNAL in
+ ip access-group INBOUND_FROM_INTERNAL out
+ 
 ```
