@@ -1,0 +1,86 @@
+Configuration de l'interface VLAN avec les ACL
+#### Commandes pour régler les VLAN
+Maintenant, il faut juste ajouter le groupe ACL avec 'out' en fin de ligne.
+
+    gig0/1.1 = VLAN1_POOL
+    gig0/1.2 = VLAN2_POOL
+    gig0/1.3 = VLAN3_POOL
+
+
+configure terminal
+interface GigabitEthernet0/1.3
+ encapsulation dot1Q 3
+ ip address 192.168.3.1 255.255.255.0
+ ip access-group INBOUND_FROM_INTERNAL in
+ ip access-group INBOUND_FROM_INTERNAL out
+exit
+
+
+
+---
+
+Changer l'ip DNS dans le service DHCP fournit par HSRP2
+
+    LAN_SIEGE :
+
+configure terminal
+ip dhcp pool LAN_SIEGE
+ network 10.0.0.0 255.255.252.0
+ default-router 10.0.3.250
+ dns-server 10.255.0.2
+ domain-name wr
+exit
+
+
+
+    VLAN1_POOL :
+
+configure terminal
+ip dhcp pool VLAN1_POOL
+ network 192.168.1.0 255.255.255.0
+ default-router 10.1.0.254
+ dns-server 10.255.0.2
+ domain-name wr
+exit
+
+
+
+    VLAN2_POOL :
+
+configure terminal
+ip dhcp pool VLAN2_POOL
+ network 192.168.2.0 255.255.255.0
+ default-router 10.1.0.254
+ dns-server 10.255.0.2
+ domain-name wr
+exit
+
+
+
+    VLAN3_POOL :
+
+configure terminal
+ip dhcp pool VLAN3_POOL
+ network 192.168.3.0 255.255.255.0
+ default-router 10.1.0.254
+ dns-server 10.255.0.2
+ domain-name wr
+exit
+
+Vérification des configurations
+
+    Vérifier les interfaces configurées :
+
+show running-config | section interface
+
+
+
+    Vérifier les pools DHCP configurés :
+
+show running-config | include dhcp
+
+
+
+    Vérifier les ACL appliquées sur l'interface :
+
+show running-config | section access-group
