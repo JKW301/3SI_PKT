@@ -1,0 +1,25 @@
+Configuration de l'interface sur le routeur RFAI
+configure terminal
+interface GigabitEthernet0/0
+ip address 10.255.0.1 255.255.255.0
+no shutdown
+exit
+
+Test de connectivité depuis le routeur RFAI vers le serveur TFTP
+
+ping 10.255.0.4
+
+
+Sauvegarde de la configuration vers le serveur TFTP
+
+Commande exécutée sur le routeur RFAI pour sauvegarder la configuration actuelle vers le serveur TFTP :
+
+copy running-config tftp
+
+Lors de l'exécution : 
+10.255.0.4
+RFAI-config
+Le fichier RFAI-config doit apparaître sur le serveur TFTP dans Service > TFTP > et dans la liste 
+
+Ping depuis le serveur TFTP vers le routeur : 
+ping 10.255.0.1
